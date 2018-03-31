@@ -288,7 +288,9 @@ class TfPoseEstimator:
         return npimg_q
 
     @staticmethod
-    def draw_humans(npimg, humans, imgcopy=False):
+    def draw_humans(npimg, humans, imgcopy=False, var=0):
+        print("Var: {}".format(var))
+        var += 1
         if imgcopy:
             npimg = np.copy(npimg)
         image_h, image_w = npimg.shape[:2]
@@ -300,6 +302,7 @@ class TfPoseEstimator:
                     continue
 
                 body_part = human.body_parts[i]
+                print(body_part)
                 center = (int(body_part.x * image_w + 0.5), int(body_part.y * image_h + 0.5))
                 centers[i] = center
                 cv2.circle(npimg, center, 3, common.CocoColors[i], thickness=3, lineType=8, shift=0)
