@@ -287,9 +287,12 @@ class TfPoseEstimator:
         npimg_q = npimg_q.astype(np.uint8)
         return npimg_q
 
+    var = 0
     fd = open('/Users/lee/Documents/pprojects/la-body/out.txt', 'w')
     @staticmethod
     def draw_humans(npimg, humans, imgcopy=False):
+        TfPoseEstimator.fd.write("frame: {}\n".format(TfPoseEstimator.var))
+        TfPoseEstimator.var += 1
         if imgcopy:
             npimg = np.copy(npimg)
         image_h, image_w = npimg.shape[:2]
