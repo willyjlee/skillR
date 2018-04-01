@@ -287,10 +287,9 @@ class TfPoseEstimator:
         npimg_q = npimg_q.astype(np.uint8)
         return npimg_q
 
+    fd = open('/Users/lee/Documents/pprojects/la-body/out.txt', 'w')
     @staticmethod
-    def draw_humans(npimg, humans, imgcopy=False, var=0):
-        print("Var: {}".format(var))
-        var += 1
+    def draw_humans(npimg, humans, imgcopy=False):
         if imgcopy:
             npimg = np.copy(npimg)
         image_h, image_w = npimg.shape[:2]
@@ -302,7 +301,8 @@ class TfPoseEstimator:
                     continue
 
                 body_part = human.body_parts[i]
-                print(body_part)
+
+                TfPoseEstimator.fd.write(str(body_part) + "\n")
                 center = (int(body_part.x * image_w + 0.5), int(body_part.y * image_h + 0.5))
                 centers[i] = center
                 cv2.circle(npimg, center, 3, common.CocoColors[i], thickness=3, lineType=8, shift=0)
