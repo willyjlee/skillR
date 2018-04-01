@@ -13,7 +13,7 @@
 # only use bodyparts that are in both
 
 
-index_to_bodypart = { 0:  "Nose", 1:  "Neck", 2:  "RShoulder", 3:  "RElbow", 4:  "RWrist", 5:  "LShoulder", 6:  "LElbow", 7:  "LWrist", 8:  "RHip", 9:  "RKnee", 10: "RAnkle", 11: "LHip", 12: "LKnee", 13: "LAnkle", 14: "REye" }
+index_to_bodypart = { 0: "nose", 1: "neck", 2: "right shoulder", 3: "right elbow", 4: "right wrist", 5: "left shoulder", 6: "left elbow", 7: "left wrist", 8:  "right hip", 9:  "right knee", 10: "right ankle", 11: "left hip", 12: "left knee", 13: "left ankle", 14: "right eye" }
 
 def parse(file):
     fd = open(file, 'r')
@@ -193,7 +193,35 @@ for frame_index in range(min(len(parsed_a), len(parsed_b))):
 		offsets[i].append(offset)
 
 
-for bodypart_offsets in offsets:
+threshold = 0.025
+
+for i in range(len(offsets)):
+	bodypart_index = bodypart_indices[i]
+	bodypart_offsets = offsets[i]
 	avg_x_offset = sum([x[0] for x in bodypart_offsets]) / len(bodypart_offsets)
 	avg_y_offset = sum([y[0] for y in bodypart_offsets]) / len(bodypart_offsets)
+	
+
+	up = False
+	down = False
+	left = False
+	right = False
+
+	if avg_x_offset > threshold:
+		right = True
+		print('your', index_to_bodypart[bodypart_index],  'is too much to the right')
+	elif avg_x_offset * -1 > threshold:
+		left = True
+		print('your', index_to_bodypart[bodypart_index], 'is too much to the left')
+	if avg_y_offset > threshold:
+		up = True
+		print('your', index_to_bodypart[bodypart_index], 'is too high')
+	elif avg_y_offset * -1 > threshold:
+		down = True
+		print('your', index_to_bodypart[bodypart_index], 'is too low')
+
+
+
+
+
 	print(round(avg_x_offset, 3), round(avg_y_offset, 3))
